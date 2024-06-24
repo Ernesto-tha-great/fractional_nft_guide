@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./OkidoPropertyNFT.sol";
 import "./FractionalOwnership.sol";
@@ -10,14 +9,12 @@ contract OkidoFinance {
     OkidoPropertyNFT public propertyNFT;
     IERC20 public okidoToken;
     uint256 public propertyCounter;
-        address public owner;
+    address public owner;
 
-    modifier onlyOwner () {
+    modifier onlyOwner() {
         require(msg.sender == owner, "Not owner");
-
         _;
     }
-
 
     struct Property {
         uint256 tokenId;
@@ -25,6 +22,8 @@ contract OkidoFinance {
         uint256 pricePerShare;
         uint256 totalShares;
         uint256 sharesSold;
+        string name;
+        string uri;
     }
 
     mapping(uint256 => Property) public properties;
@@ -50,7 +49,9 @@ contract OkidoFinance {
             fractionalContract: fractionalContract,
             pricePerShare: pricePerShare,
             totalShares: totalShares,
-            sharesSold: 0
+            sharesSold: 0,
+            name: name,
+            uri: uri
         });
 
         propertyCounter++;
@@ -75,7 +76,16 @@ contract OkidoFinance {
     function listProperties() external view returns (Property[] memory) {
         Property[] memory allProperties = new Property[](propertyCounter);
         for (uint256 i = 1; i <= propertyCounter; i++) {
-            allProperties[i - 1] = properties[i];
+            Property storage property = properties[i];
+            allProperties[i - 1] = Property({
+                tokenId: property.tokenId,
+                fractionalContract: property.fractionalContract,
+                pricePerShare: property.pricePerShare,
+                totalShares: property.totalShares,
+                sharesSold: property.sharesSold,
+                name: property.name,
+                uri: property.uri
+            });
         }
         return allProperties;
     }

@@ -15,8 +15,9 @@ contract OkidoPropertyNFT is ERC721 {
         _tokenIdCounter++;
         uint256 newTokenId = _tokenIdCounter;
         _mint(to, newTokenId);
+            _tokenExists[newTokenId] = true;
         _setTokenURI(newTokenId, uri);
-        _tokenExists[newTokenId] = true;
+    
         return newTokenId;
     }
 

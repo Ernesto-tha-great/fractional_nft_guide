@@ -1,91 +1,71 @@
 "use client";
 import Link from "next/link";
-import { useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 import {
-  useAccount,
-  useSendTransaction,
-  useSignMessage,
-  useWaitForTransactionReceipt,
-} from "wagmi";
+  OkidoTokenAbi,
+  okidoFinanceAbi,
+  okidoToken,
+  okidoFinance,
+} from "@/constants";
+import { Button } from "@/components/ui/button";
+import { useAccount, useReadContract } from "wagmi";
 import { parseEther } from "viem";
 import { toast } from "sonner";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
+import PropertyCard from "@/components/PropertyCard";
+import AddPropertyModal from "@/components/AddPropertyModal";
 
 export default function Home() {
+  const [properties, setProperties] = useState<any>([]);
   const { isConnected } = useAccount();
-  const { signMessage } = useSignMessage();
-  const { sendTransaction, data: hash } = useSendTransaction();
+
   const { open } = useWeb3Modal();
+
+  // add logic for approval for external user
+
   const handleConnect = () => {
     open();
   };
+
   const {
-    isLoading: isConfirming,
+    data: propertyData,
     error,
-    isSuccess: isConfirmed,
-  } = useWaitForTransactionReceipt({
-    hash,
+    status,
+  } = useReadContract({
+    abi: okidoFinanceAbi,
+    address: okidoFinance,
+    functionName: "listProperties",
   });
 
   useEffect(() => {
-    if (isConfirming) {
-      toast.loading("Transaction Pending");
+    if (propertyData) {
+      setProperties(propertyData);
     }
-    toast.dismiss();
-
-    if (isConfirmed) {
-      toast.success("Transaction Successful", {
-        action: {
-          label: "View on Etherscan",
-          onClick: () => {
-            window.open(`https://explorer-testnet.morphl2.io/tx/${hash}`);
-          },
-        },
-      });
-    }
-    if (error) {
-      toast.error("Transaction Failed");
-    }
-  }, [isConfirming, isConfirmed, error, hash]);
+  }, [propertyData]);
 
   return (
     <main>
-      <section className="py-12 flex flex-col items-center text-center gap-8">
-        <h1 className="text-4xl font-bold">Web3 Starter Kit</h1>
-        <p className="text-2xl text-muted-foreground">
-          Build your dapp frontends with the latest tools.
-        </p>
+      <section className="py-6 flex justify-between  items-center text-center ">
+        <h1 className="text-4xl font-bold">Owner actions</h1>
+
+        <AddPropertyModal>
+          <Button>Add property </Button>
+        </AddPropertyModal>
       </section>
-      <div className="flex gap-6 items-center justify-center">
-        {!isConnected ? (
-          <Button onClick={handleConnect}>Connect Wallet</Button>
-        ) : (
-          <>
-            <Button onClick={handleConnect}>Info</Button>
-            <Button onClick={() => signMessage({ message: "gm" })}>
-              {" "}
-              Say GM{" "}
-            </Button>
-            <Button
-              onClick={() =>
-                sendTransaction({
-                  to: "0x1a343eFB966E63bfA25A2b368455448f02466Ffc",
-                  value: parseEther("0.1"),
-                })
-              }
-              disabled={isConfirming}
-              variant={"secondary"}
-            >
-              Tip .1 Eth
-            </Button>
-          </>
-        )}
-      </div>
-      <div className="flex mt-10 items-center justify-center">
-        <Link href="/counter">
-          <Button className="w-60">Counter</Button>
-        </Link>
+
+      <div className="container mx-auto py-4">
+        <h1 className="text-2xl font-bold mb-6">Properties</h1>
+        <div className="flex gap-4 flex-wrap">
+          {properties.length > 0 ? (
+            properties.map((property: any) => (
+              <PropertyCard key={property.tokenId} property={property} />
+            ))
+          ) : (
+            <div>
+              <h1 className="text-2xl font-semibold">No property available</h1>
+            </div>
+          )}
+        </div>
       </div>
     </main>
   );
