@@ -10,6 +10,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "www.freepik.com",
       },
+      {
+        protocol: "https",
+        hostname: "www.loom.com",
+      },
     ],
   },
 };

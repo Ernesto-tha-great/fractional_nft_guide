@@ -70,7 +70,6 @@ const AddPropertyModal = ({ children }: InvestModalProps) => {
   }, [isConfirming, isConfirmed, error, hash]);
 
   const formSchema = z.object({
-    // ensure to enforce validation regarding symbol and others
     name: z.any(),
     symbol: z.any(),
     uri: z.any(),
@@ -105,7 +104,7 @@ const AddPropertyModal = ({ children }: InvestModalProps) => {
         ],
       });
 
-      console.log("room transaction hash:", addPropertyTx);
+      console.log("property transaction hash:", addPropertyTx);
     } catch (err: any) {
       toast.error("Transaction Failed: " + err.message);
       console.log("Transaction Failed: " + err.message);

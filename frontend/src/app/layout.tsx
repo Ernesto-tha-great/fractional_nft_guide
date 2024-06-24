@@ -27,10 +27,10 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" type="image/svg+xml" href="/icon.svg" />
-        <title>Modern Web3 Starter</title>
+        <title>Morph Starter kit</title>
         <meta
           name="description"
-          content="A starter kit for using the latest tools for building your dApps frontends"
+          content="A starter kit for building on morph"
         />
       </head>
       <body

@@ -15,7 +15,7 @@ export default function Nav() {
   };
 
   return (
-    <header>
+    <header className="">
       <nav>
         <ul className="flex items-center justify-between">
           <li>

@@ -1,33 +1,12 @@
-import { useWriteContract } from "wagmi";
-// import { bookingAbi, bookingAddress } from "@/constants";
-import { toast } from "sonner";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import BuySharesModal from "./BuySharesModal";
-// import AddReviewModal from "./AddReviewModal";
 
-interface RoomCardProps {
+interface PropertyCardProps {
   property: any;
 }
 
-const PropertyCard: React.FC<RoomCardProps> = ({ property }) => {
-  const { data: hash, isPending, writeContractAsync } = useWriteContract();
-
-  //   const handleBookRoom = async () => {
-  //     try {
-  //       const bookRoomTx = await writeContractAsync({
-  //         abi: bookingAbi,
-  //         address: bookingAddress,
-  //         functionName: "bookRoomByCategory",
-  //         args: [room.category, 224, 2244],
-  //       });
-
-  //       console.log("room booking hash:", bookRoomTx);
-  //     } catch (err: any) {
-  //       toast.error("Transaction Failed: " + err.message);
-  //     }
-  //   };
-
+const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   return (
     <div className=" w-96 text-black rounded overflow-hidden shadow-lg bg-white flex-shrink-0">
       <Image
