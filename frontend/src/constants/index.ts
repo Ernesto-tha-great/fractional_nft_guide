@@ -1,7 +1,7 @@
 import { OkidoTokenAbi } from "./okidoTokenAbi";
 import { okidoFinanceAbi } from "./okidoFinanceAbi";
 
-const okidoToken = "0xd44aD4876ab7CcA5C7235DE46cbf32948F487d4D";
-const okidoFinance = "0xc694c74de5daff9D7b3cdE5518cC3B1f4c8204ac";
+const okidoToken = "0x950f614d104F5cb02a509e51a03Ad1639Eb7162E";
+const okidoFinance = "0x4FB7F8d4c64AA44704AF885827d0379b773c55c6";
 
 export { OkidoTokenAbi, okidoFinanceAbi, okidoToken, okidoFinance };
